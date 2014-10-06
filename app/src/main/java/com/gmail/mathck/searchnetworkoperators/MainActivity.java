@@ -5,7 +5,6 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -20,14 +19,18 @@ public class MainActivity extends Activity {
             startActivity(intent);
         }
         catch (Exception e1) {
+            intent = new Intent();
             intent.setClassName("com.android.phone", "com.android.phone.NetworkSetting");
-            startActivity(intent);
 
             try {
-                ComponentName cName = new ComponentName("com.android.phone", "com.android.phone.NetworkSetting");
-                intent.setComponent(cName);
+                startActivity(intent);
             }
             catch (Exception e2) {
+                intent = new Intent();
+                ComponentName cName = new ComponentName("com.android.phone", "com.android.phone.NetworkSetting");
+                intent.setComponent(cName);
+
+                startActivity(intent);
             }
         }
 
