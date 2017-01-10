@@ -1,49 +1,37 @@
 package com.gmail.mathck.searchnetworkoperators;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
+import android.util.Log;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
 
-        Intent intent = new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS);
-        intent.setClassName("com.android.phone", "com.android.phone.NetworkSetting");
+        Intent intentSelectNetworkAutomatic = new Intent();
+        intentSelectNetworkAutomatic.setAction(android.provider.Settings.ACTION_NETWORK_OPERATOR_SETTINGS);
+        intentSelectNetworkAutomatic.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intentSelectNetworkAutomatic.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        intentSelectNetworkAutomatic.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
 
-        try {
-            startActivity(intent);
+        if (intentSelectNetworkAutomatic.resolveActivity(getPackageManager()) != null) {
+            startActivity(intentSelectNetworkAutomatic);
         }
-        catch (Exception e1) {
-            intent = new Intent(Intent.ACTION_MAIN);
-            intent.setClassName("com.android.phone", "com.android.phone.NetworkSetting");
-
-            try {
-                startActivity(intent);
-            }
-            catch (Exception e2) {
-                intent = new Intent(Intent.ACTION_MAIN);
-                ComponentName cName = new ComponentName("com.android.phone", "com.android.phone.NetworkSetting");
-                intent.setComponent(cName);
-
-                try {
-                    startActivity(intent);
-                }
-                catch (Exception e3) {
-                    intent = new Intent(Intent.ACTION_MAIN);
-                    ComponentName cName2 = new ComponentName("com.android.phone", "com.android.phone.MobileNetworkSettings");
-                    intent.setComponent(cName2);
-
-                    startActivity(intent);
-                }
-            }
+        else {
+            Log.e("SearchNetworkOperators", "ACTION_NETWORK_OPERATOR_SETTINGS not found");
+            Toast.makeText(this, "Selecting the network automatically did not work on your device", Toast.LENGTH_LONG).show();
         }
 
-        //finish(); don't close the app
+    }
+
+    // http://stackoverflow.com/a/32224146/2880465
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setVisible(true);
     }
 }

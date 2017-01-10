@@ -8,8 +8,13 @@ android {
         applicationId "com.gmail.mathck.searchnetworkoperators"
         minSdkVersion 10
         targetSdkVersion 25
-        versionCode 3
-        versionName "3.0"
+        versionCode 4
+        versionName "4.0"
+        multiDexEnabled true
+    }
+
+    dexOptions {
+        javaMaxHeapSize "2g"
     }
 }
 
